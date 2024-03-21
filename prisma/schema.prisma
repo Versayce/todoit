@@ -21,12 +21,12 @@ model User {
   firstName   String?
   lastName    String?
   email       String        @unique
-  tasks       Task[]
+  tasks       UserTask[]
   projects    Project[]
   ProjectTask ProjectTask[]
 }
 
-model Task {
+model UserTask {
   id               Int      @id @default(autoincrement())
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
