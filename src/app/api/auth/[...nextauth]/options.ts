@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth'
+import NextAuth, { SessionStrategy } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
@@ -6,7 +6,7 @@ import { prisma } from "../../prismaClient";
 
 const prismaAdapter = PrismaAdapter(prisma)
 
-export const authOptions = NextAuth({
+export const authOptions = {
     adapter: prismaAdapter,
     providers: [
         CredentialsProvider({
@@ -30,8 +30,8 @@ export const authOptions = NextAuth({
         }),
     ],
     session: {
-        strategy: "jwt",
+        strategy: "jwt" as SessionStrategy,
     },
     secret: process.env.NEXTAUTH_SECRET,
     debug: process.env.NODE_ENV === "development"
-})
+}
