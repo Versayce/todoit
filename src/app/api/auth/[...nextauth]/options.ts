@@ -3,7 +3,6 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { prisma } from "../../prismaClient";
-import { NextApiRequest } from 'next';
 
 const prismaAdapter = PrismaAdapter(prisma)
 
@@ -17,6 +16,11 @@ export const authOptions = NextAuth({
                 password: {  label: "password", type: "password" }
             },
             async authorize(credentials, req) {
+                const user = await prisma.user.findUnique({where: {email: credentials?.username}})
+                if (!user) {
+                    return null;
+                }
+                const { email, hashedPassword } = user;
                 return null
             }
         }),

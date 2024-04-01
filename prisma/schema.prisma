@@ -33,35 +33,36 @@ model Account {
 }
 
 model Session {
-  id     Int   @id @default(autoincrement())
-  userId Int
-  sessionToken String @unique
-  expires DateTime
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  sessionToken String   @unique
+  expires      DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
   identifier String
-  token String
-  expires DateTime
+  token      String
+  expires    DateTime
 
   @@unique([identifier, token])
 }
 
 // Database Table Models
 model User {
-  id          Int           @id @default(autoincrement())
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  firstName   String?
-  lastName    String?
-  email       String        @unique
-  tasks       UserTask[]
-  projects    Project[]
-  ProjectTask ProjectTask[]
-  accounts    Account[]
-  sessions    Session[]
+  id             Int           @id @default(autoincrement())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  firstName      String?
+  lastName       String?
+  email          String        @unique
+  hashedPassword String?
+  tasks          UserTask[]
+  projects       Project[]
+  ProjectTask    ProjectTask[]
+  accounts       Account[]
+  sessions       Session[]
 }
 
 model UserTask {
