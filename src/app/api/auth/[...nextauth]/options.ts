@@ -1,11 +1,11 @@
-import { NextAuthOptions, SessionStrategy } from 'next-auth'
+import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { prisma } from "../../prismaClient";
+import { prisma } from '../../prismaClient';
 
-const bcrypt = require('bcrypt')
 const prismaAdapter = PrismaAdapter(prisma)
+const bcrypt = require('bcrypt')
 
 export const authOptions: NextAuthOptions = {
     adapter: prismaAdapter,
@@ -13,10 +13,11 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: 'credentials',
             credentials: {
-                username: { label: "email", type: "text", placeholder: "Username" },
-                password: {  label: "password", type: "password" },
+                email: { label: 'email', type: 'text', placeholder: 'email' },
+                password: { label: 'password', type: 'password', placeholder: 'password' },
             },
             async authorize(credentials) {
+                //TODO finish password checking logic 
                 // if (!credentials?.username || !credentials?.password) return null;
 
                 // const user = await prisma.user.findUnique({
@@ -32,8 +33,9 @@ export const authOptions: NextAuthOptions = {
 
                 // return user
 
-                //TODO test below 
-                const user = { id: '1', name: 'Alex', email: 'test@test.com'}
+                //TODO testing: 
+                const hashedPass = await bcrypt.hash(credentials?.password, 14);
+                const user = { id: '1', name: 'Alextest', email: credentials?.email }
                 return user;
             }
         }),
@@ -56,8 +58,8 @@ export const authOptions: NextAuthOptions = {
         }
     },
     session: {
-        strategy: "jwt" as SessionStrategy,
+        strategy: 'jwt',
     },
     secret: process.env.NEXTAUTH_SECRET,
-    debug: process.env.NODE_ENV === "development"
+    debug: process.env.NODE_ENV === 'development'
 }
