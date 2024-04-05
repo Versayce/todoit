@@ -3,9 +3,9 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { prisma } from '../../prismaClient';
+import bcrypt from 'bcrypt'
 
 const prismaAdapter = PrismaAdapter(prisma)
-const bcrypt = require('bcrypt')
 
 export const authOptions: NextAuthOptions = {
     adapter: prismaAdapter,
@@ -17,26 +17,20 @@ export const authOptions: NextAuthOptions = {
                 password: { label: 'password', type: 'password', placeholder: 'password' },
             },
             async authorize(credentials) {
+                // //TODO testing: 
+                // const userTest = { id: '1', name: 'testname', email: credentials?.email }
+                // return userTest;
+
                 //TODO finish password checking logic 
-                // if (!credentials?.username || !credentials?.password) return null;
+                if (!credentials?.email || !credentials?.password) return null;
 
-                // const user = await prisma.user.findUnique({
-                //     where: {
-                //         email: credentials?.username,
-                //     }
-                // });
-
-                // if (!user) return null;
+                const user = await prisma.user.findUnique({ where: { email: credentials?.email, } });
+                if (!user || !user.hashedPassword) return null;
                 
-                // const passwordMatch = await bcrypt.compare(credentials.password, user.hashedPassword)
-                // if (!passwordMatch) return null;
+                const passwordMatch = await bcrypt.compare(credentials.password, user.hashedPassword)
+                if (!passwordMatch) return null;
 
-                // return user
-
-                //TODO testing: 
-                const hashedPass = await bcrypt.hash(credentials?.password, 14);
-                const user = { id: '1', name: 'Alextest', email: credentials?.email }
-                return user;
+                return user
             }
         }),
         GithubProvider({
@@ -46,14 +40,16 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         session({ session, token }) {
-            session.user.id = token.id;
+            session.user.id = token.userId;
+            console.log("session: ", session)
             return session;
         },
         jwt({ token, account, user }) {
             if (account) {
                 token.accessToken = account.access_token;
-                token.id = user.id;
+                token.userId = user.id;
             }
+            console.log("token", token)
             return token;
         }
     },
