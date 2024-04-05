@@ -1,25 +1,27 @@
-import { prisma } from "../prismaClient.js";
+import { prisma } from "../prismaClient";
 
-async function main() {
-  const user = await prisma.user.create({
-      data: {
-        email: 'test@test.io',
-        firstName: 'Test',
-        lastName: 'User',
-      },
-  })
+export async function POST(req: Request) {
+  try {
+    const data = await req.json();
+    const { email, username } = data;
+    console.log('req data: ', data);
 
-  const allUsers = await prisma.user.findMany();
-  console.log(allUsers);
+    if (!email || !username) return new Response('No data provided for one or more fields', { status: 400 })
 
+    const thisUser = await prisma.user.findFirst({where: {email: email}})
+    const allUsers = await prisma.user.findMany();
+
+    return new Response(JSON.stringify({ thisUser }), { status: 200 });
+  } catch (error) {
+    return new Response(`${ error }`, { status: 500 })
+  }
 }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect()
-  })
-  .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1);
-  })
+
+export async function DELETE(req: Request) {
+  try {
+
+  } catch(error) {
+    return new Response(`${ error }`, { status: 500 })
+  }
+}
