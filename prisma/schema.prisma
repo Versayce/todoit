@@ -73,7 +73,7 @@ model UserTask {
   priority         Int?
   startDate        DateTime?
   endDate          DateTime?
-  completionStatus Boolean?   @default(false)
+  completionStatus Boolean   @default(false)
 
   author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String
