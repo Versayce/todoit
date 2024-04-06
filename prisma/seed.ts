@@ -1,7 +1,7 @@
 import { prisma } from '../src/app/api/prismaClient'
 import bcrypt from "bcrypt"
 
-async function seedDatabase() {
+async function seedDatabase(): Promise<void> {
     try {
         // Ensure deletion order respects foreign key constraints
         await prisma.userTask.deleteMany({});
@@ -26,14 +26,14 @@ async function seedDatabase() {
             data: [
                 {
                     title: 'Task 1',
-                    description: 'This is the first task created by this user.',
+                    description: `This is the first task created by user: ${user.username}.`,
                     priority: 1,
                     completionStatus: false,
                     authorId: user.id
                 },
                 {
                     title: 'Task 2',
-                    description: 'This is the second task created by this user.',
+                    description: `This is the first task created by user: ${user.username}.`,
                     priority: 2,
                     completionStatus: false,
                     authorId: user.id
