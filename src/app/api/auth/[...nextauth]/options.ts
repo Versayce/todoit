@@ -4,6 +4,7 @@ import GithubProvider from 'next-auth/providers/github'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { prisma } from '../../prismaClient';
 import bcrypt from 'bcrypt'
+import { User } from '@prisma/client';
 
 const prismaAdapter = PrismaAdapter(prisma)
 
@@ -17,11 +18,6 @@ export const authOptions: NextAuthOptions = {
                 password: { label: 'password', type: 'password', placeholder: 'password' },
             },
             async authorize(credentials) {
-                // //TODO testing: 
-                // const userTest = { id: '1', name: 'testname', email: credentials?.email }
-                // return userTest;
-
-                //TODO finish password checking logic 
                 if (!credentials?.email || !credentials?.password) return null;
 
                 const user = await prisma.user.findUnique({ where: { email: credentials?.email, } });
@@ -30,7 +26,11 @@ export const authOptions: NextAuthOptions = {
                 const passwordMatch = await bcrypt.compare(credentials.password, user.hashedPassword)
                 if (!passwordMatch) return null;
 
-                return user
+                return {
+                    id: user.id,
+                    username: user.username,
+                    email: user.email,
+                }
             }
         }),
         GithubProvider({
@@ -40,16 +40,27 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         session({ session, token }) {
+            console.log("Session Callback: ", { session, token })
             session.user.id = token.userId;
-            console.log("session: ", session)
-            return session;
-        },
-        jwt({ token, account, user }) {
-            if (account) {
-                token.accessToken = account.access_token;
-                token.userId = user.id;
+            return {
+                ...session,
+                user: {
+                    ...session.user,
+                    id: token.id,
+                }
             }
-            console.log("token", token)
+        },
+        jwt({ token, user }) {
+            console.log("JWT Callback: ", { token, user })
+            if (user) {
+                const u = user as unknown as User
+                return {
+                    ...token,
+                    id: u.id,
+                    email: u.email,
+                    name: u.username
+                };
+            }
             return token;
         }
     },

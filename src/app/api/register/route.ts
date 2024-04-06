@@ -23,8 +23,10 @@ export async function POST(req: Request) {
             })
             return new Response(`User account under email: ${ email } registered successfully}`, { status: 200 })
         }
-        return new Response('A user already exists with these credentials', { status: 500 })
+
+        return new Response('A user already exists with these credentials', { status: 400 })
     } catch (error) {
+
         return new Response(`${ error }`,{ status: 500 },)
     } 
 }
