@@ -7,12 +7,7 @@ export async function POST(req: Request) {
         const { username, email, password } = data;
 
         if (!username || !email || !password) {
-            return new Response(
-                'Missing username, email, or password', 
-                {
-                    status: 400,
-                },
-            )  
+            return new Response('Missing username, email, or password', { status: 400, })  
         }
 
         const existingUser = await prisma.user.findUnique({ where: { email: email } })
@@ -26,26 +21,10 @@ export async function POST(req: Request) {
                     hashedPassword: hashedPass
                 }
             })
-            return new Response(
-                `User account under email: ${ email } registered successfully}`,
-                {
-                    status: 200
-                }
-            )
-            // res.status(200).json({ user: newUser, success: true, message: `User account under email: ${ email } registered successfully` })
+            return new Response(`User account under email: ${ email } registered successfully}`, { status: 200 })
         }
-        return new Response(
-            'A user already exists with these credentials',
-            {
-                status: 500,
-            }
-        )
+        return new Response('A user already exists with these credentials', { status: 500 })
     } catch (error) {
-        return new Response(
-            `${error}`,
-            {
-                status: 500,
-            },
-        )
+        return new Response(`${ error }`,{ status: 500 },)
     } 
 }
