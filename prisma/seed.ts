@@ -4,13 +4,14 @@ import bcrypt from "bcrypt"
 async function seedDatabase(): Promise<void> {
     try {
         // Ensure deletion order respects foreign key constraints
+        console.log('Deleting existing seed data...');
         await prisma.userTask.deleteMany({});
         await prisma.projectTask.deleteMany({});
         await prisma.project.deleteMany({});
         await prisma.user.deleteMany({});
-        console.log('Deleted any existing seed data...');
 
         // Seed test user without tasks and projects
+        console.log('Seeding user...');
         const password = "testpass";
         const hashedPass = await bcrypt.hash(password, 14);
         const user = await prisma.user.create({
@@ -20,8 +21,10 @@ async function seedDatabase(): Promise<void> {
                 hashedPassword: hashedPass,
             }
         });
+        console.log('User seeding complete.');
 
         // Seed user tasks
+        console.log('Seeding user tasks...');
         await prisma.userTask.createMany({
             data: [
                 {
@@ -40,8 +43,10 @@ async function seedDatabase(): Promise<void> {
                 }
             ]
         });
+        console.log('User task seeding complete.');
 
         // Seed user projects and project tasks
+        console.log('Seeding project and projectTasks...');
         const project = await prisma.project.create({
             data: {
                 title: 'project1',
@@ -71,9 +76,9 @@ async function seedDatabase(): Promise<void> {
             }
         });
 
-        console.log("Added user and related data successfully.");
+        console.log("***SEEDING COMPLETED***");
     } catch (error) {
-        console.error("Failed to seed database:", error);
+        console.error("SEEDING FAILED:", error);
     } finally {
         await prisma.$disconnect();
     }
