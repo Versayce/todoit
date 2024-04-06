@@ -47,7 +47,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "UserTask" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "title" VARCHAR(100) NOT NULL,
@@ -87,8 +87,8 @@ CREATE TABLE "ProjectTask" (
     "completionStatus" BOOLEAN NOT NULL DEFAULT false,
     "startDate" TIMESTAMP(3),
     "endDate" TIMESTAMP(3),
-    "authorId" TEXT NOT NULL,
     "projectId" INTEGER NOT NULL,
+    "authorId" TEXT NOT NULL,
 
     CONSTRAINT "ProjectTask_pkey" PRIMARY KEY ("id")
 );
@@ -115,10 +115,10 @@ ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "UserTask" ADD CONSTRAINT "UserTask_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Project" ADD CONSTRAINT "Project_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ProjectTask" ADD CONSTRAINT "ProjectTask_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Project" ADD CONSTRAINT "Project_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ProjectTask" ADD CONSTRAINT "ProjectTask_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProjectTask" ADD CONSTRAINT "ProjectTask_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

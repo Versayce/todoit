@@ -3,65 +3,77 @@ import bcrypt from "bcrypt"
 
 async function seedDatabase() {
     try {
-        // Delete all existing data
+        // Ensure deletion order respects foreign key constraints
         await prisma.userTask.deleteMany({});
-        await prisma.user.deleteMany({});
-        await prisma.project.deleteMany({});
         await prisma.projectTask.deleteMany({});
+        await prisma.project.deleteMany({});
+        await prisma.user.deleteMany({});
+        console.log('Deleted any existing seed data...');
 
-        // Seed test user
-        const password = "1234";
+        // Seed test user without tasks and projects
+        const password = "testpass";
         const hashedPass = await bcrypt.hash(password, 14);
         const user = await prisma.user.create({
             data: {
-                username: 'example_user',
-                email: 'user@example.com',
+                username: 'testUser',
+                email: 'user@test.com',
                 hashedPassword: hashedPass,
-                tasks: {
+            }
+        });
+
+        // Seed user tasks
+        await prisma.userTask.createMany({
+            data: [
+                {
+                    title: 'Task 1',
+                    description: 'This is the first task created by this user.',
+                    priority: 1,
+                    completionStatus: false,
+                    authorId: user.id
+                },
+                {
+                    title: 'Task 2',
+                    description: 'This is the second task created by this user.',
+                    priority: 2,
+                    completionStatus: false,
+                    authorId: user.id
+                }
+            ]
+        });
+
+        // Seed user projects and project tasks
+        const project = await prisma.project.create({
+            data: {
+                title: 'project1',
+                description: 'this is project #1',
+                authorId: user.id,
+                projectTasks: {
                     create: [
                         {
-                            title: 'Task 1',
-                            description: 'This is the first task created by this user.',
+                            title: 'test1',
+                            description: 'project task #1',
                             priority: 1,
-                            startDate: new Date(),
-                            endDate: new Date(),
-                            completionStatus: false
+                            completionStatus: false,
+                            authorId: user.id
                         },
                         {
-                            title: 'Task 2',
-                            description: 'This is the second task created by this user.',
+                            title: 'test2',
+                            description: 'project task #2',
                             priority: 2,
-                            startDate: new Date(),
-                            endDate: new Date(),
-                            completionStatus: false
-                        }
-                    ]
-                },
-                projects: {
-                    create: [
-                        {
-                            title: 'project1',
-                            description: 'this is project #1',
-                            projectTask: {
-                                create: [
-                                    {
-                                        title: "project1 task #1",
-                                        description: "project1 task"
-                                    }
-                                ]
-                            }
+                            completionStatus: false,
+                            authorId: user.id
                         }
                     ]
                 }
             },
             include: {
-                tasks: true // Include the tasks in the response
+                projectTasks: true
             }
         });
 
-        console.log("added user:", user);
+        console.log("Added user and related data successfully.");
     } catch (error) {
-        console.error(error);
+        console.error("Failed to seed database:", error);
     } finally {
         await prisma.$disconnect();
     }

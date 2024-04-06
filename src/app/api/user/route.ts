@@ -3,9 +3,26 @@ import { prisma } from "../prismaClient";
 export async function GET() {
   try {
     const allUsers = await prisma.user.findMany({
-      include: {
-        tasks: true
-      }
+      select: {
+        username: true,
+        email: true,
+        tasks: true,
+        projects: {
+          select: {
+            title: true,
+            description: true,
+            completionStatus:true,
+            projectTasks: {
+              select: {
+                title: true,
+                description: true,
+                priority: true,
+                completionStatus: true
+              }
+            }
+          }
+        }
+      },
     });
     
     return new Response(JSON.stringify({ allUsers }), { status: 200 });
