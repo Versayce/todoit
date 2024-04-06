@@ -65,17 +65,17 @@ model User {
 }
 
 model UserTask {
-  id               String   @id @default(cuid())
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  title            String   @db.VarChar(100)
-  description      String   @db.VarChar(255)
+  id               String    @id @default(cuid())
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  title            String    @db.VarChar(100)
+  description      String    @db.VarChar(255)
   priority         Int?
-  startDate        DateTime
-  endDate          DateTime
-  completionStatus Boolean  @default(false)
+  startDate        DateTime?
+  endDate          DateTime?
+  completionStatus Boolean   @default(false)
 
-  author   User   @relation(fields: [authorId], references: [id])
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String
 }
 
@@ -86,8 +86,8 @@ model Project {
   title            String        @db.VarChar(100)
   description      String        @db.VarChar(255)
   completionStatus Boolean       @default(false)
-  startDate        DateTime
-  endDate          DateTime
+  startDate        DateTime?
+  endDate          DateTime?
   projectTask      ProjectTask[]
 
   author   User   @relation(fields: [authorId], references: [id])
@@ -95,15 +95,15 @@ model Project {
 }
 
 model ProjectTask {
-  id               Int      @id @default(autoincrement())
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  title            String   @db.VarChar(100)
-  description      String   @db.VarChar(255)
+  id               Int       @id @default(autoincrement())
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  title            String    @db.VarChar(100)
+  description      String    @db.VarChar(255)
   priority         Int?
-  completionStatus Boolean  @default(false)
-  startDate        DateTime
-  endDate          DateTime
+  completionStatus Boolean   @default(false)
+  startDate        DateTime?
+  endDate          DateTime?
 
   author    User    @relation(fields: [authorId], references: [id])
   authorId  String

@@ -1,6 +1,4 @@
 import { prisma } from '../prismaClient'
-import { NextResponse, NextRequest } from 'next/server';
-import { NextApiResponse, NextApiRequest } from 'next';
 import bcrypt from 'bcrypt'
 
 export async function POST(req: Request) {
@@ -9,7 +7,7 @@ export async function POST(req: Request) {
         const { username, email, password } = data;
 
         if (!username || !email || !password) {
-            return new NextResponse(
+            return new Response(
                 'Missing username, email, or password', 
                 {
                     status: 400,
@@ -28,7 +26,7 @@ export async function POST(req: Request) {
                     hashedPassword: hashedPass
                 }
             })
-            return new NextResponse(
+            return new Response(
                 `User account under email: ${ email } registered successfully}`,
                 {
                     status: 200
@@ -36,14 +34,14 @@ export async function POST(req: Request) {
             )
             // res.status(200).json({ user: newUser, success: true, message: `User account under email: ${ email } registered successfully` })
         }
-        return new NextResponse(
+        return new Response(
             'A user already exists with these credentials',
             {
                 status: 500,
             }
         )
     } catch (error) {
-        return new NextResponse(
+        return new Response(
             `${error}`,
             {
                 status: 500,

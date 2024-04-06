@@ -1,9 +1,12 @@
 import { prisma } from "../prismaClient";
-import bcrypt from 'bcrypt'
 
 export async function GET() {
   try {
-    const allUsers = await prisma.user.findMany();
+    const allUsers = await prisma.user.findMany({
+      include: {
+        tasks: true
+      }
+    });
     
     return new Response(JSON.stringify({ allUsers }), { status: 200 });
   } catch(error) {
