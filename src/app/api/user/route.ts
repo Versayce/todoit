@@ -24,7 +24,7 @@ export async function GET() {
         }
       },
     });
-    
+
     return new Response(JSON.stringify({ allUsers }), { status: 200 });
   } catch(error) {
 
