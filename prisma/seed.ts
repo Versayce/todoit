@@ -18,7 +18,7 @@ async function seedDatabase() {
                 create: [
                 {
                     title: 'Task 1',
-                    description: 'Description for Task 1',
+                    description: 'This is the first task created by this user.',
                     priority: 1,
                     startDate: new Date(),
                     endDate: new Date(),
@@ -26,7 +26,7 @@ async function seedDatabase() {
                 },
                 {
                     title: 'Task 2',
-                    description: 'Description for Task 2',
+                    description: 'This is the second task created by this user.',
                     priority: 2,
                     startDate: new Date(),
                     endDate: new Date(),
