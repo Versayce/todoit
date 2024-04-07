@@ -89,7 +89,7 @@ export async function DELETE(req: Request) {
 			where: { email: email },
 		});
 
-		if (existingUser?.hashedPassword) {
+		if (existingUser && existingUser.hashedPassword) {
 			const passwordMatch = await bcrypt.compare(
 				password,
 				existingUser.hashedPassword
