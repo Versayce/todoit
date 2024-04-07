@@ -1,32 +1,40 @@
-import { prisma } from '../prismaClient'
-import bcrypt from 'bcrypt'
+import { prisma } from '../prismaClient';
+import bcrypt from 'bcrypt';
 
 export async function POST(req: Request) {
-    try {
-        const data = await req.json();
-        const { username, email, password } = data;
+	try {
+		const data = await req.json();
+		const { username, email, password } = data;
 
-        if (!username || !email || !password) {
-            return new Response('Missing username, email, or password', { status: 400, })  
-        }
+		if (!username || !email || !password) {
+			return new Response('Missing username, email, or password', {
+				status: 400,
+			});
+		}
 
-        const existingUser = await prisma.user.findUnique({ where: { email: email } })
+		const existingUser = await prisma.user.findUnique({
+			where: { email: email },
+		});
 
-        if (!existingUser) {
-            const hashedPass = await bcrypt.hash(password, 14)
-            const newUser = await prisma.user.create({
-                data: {
-                    username: username,
-                    email: email,
-                    hashedPassword: hashedPass
-                }
-            })
-            return new Response(`User account under email: ${ email } registered successfully}`, { status: 200 })
-        }
+		if (!existingUser) {
+			const hashedPass = await bcrypt.hash(password, 14);
+			const newUser = await prisma.user.create({
+				data: {
+					username: username,
+					email: email,
+					hashedPassword: hashedPass,
+				},
+			});
+			return new Response(
+				`User account under email: ${email} registered successfully}`,
+				{ status: 200 }
+			);
+		}
 
-        return new Response('A user already exists with these credentials', { status: 400 })
-    } catch (error) {
-
-        return new Response(`${ error }`,{ status: 500 },)
-    } 
+		return new Response('A user already exists with these credentials', {
+			status: 400,
+		});
+	} catch (error) {
+		return new Response(`${error}`, { status: 500 });
+	}
 }
