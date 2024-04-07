@@ -35,16 +35,17 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const data = await req.json();
-    const { email, username } = data;
+    const { email, username, id } = data;
     console.log('req data: ', data);
 
-    if (!email || !username) return new Response('No data provided for one or more fields', { status: 400 })
+    if (!email || !username || !id) return new Response('No data provided for one or more fields', { status: 400 })
 
     const thisUser = await prisma.user.findFirst({
       where: {
         OR: [
           { email: email },
-          { username: username } 
+          { username: username },
+          { id: id }
         ]
       }
     })
