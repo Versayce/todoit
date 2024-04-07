@@ -1,4 +1,5 @@
 import { prisma } from "../prismaClient";
+import bcrypt from 'bcrypt'
 
 export async function GET() {
   try {
@@ -62,12 +63,17 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const data = await req.json();
-    const { email, username, password } = data;
+    const { email, password } = data;
+
+    if (!email || !password) return new Response('The required credentials have not been given', { status: 500 })
     
-    const thisUser = await prisma.user.findFirst({ where: { email: email } })
-    if (thisUser) {
-      const deletedUser = await prisma.user.delete({ where: { email: thisUser?.email } });
-      return new Response(`User: ${ deletedUser.email } deleted`, { status: 200 });
+    const existingUser = await prisma.user.findUnique({ where: { email: email } })
+    if (existingUser?.hashedPassword) {
+      const passwordMatch = await bcrypt.compare(password, existingUser.hashedPassword)
+      if (passwordMatch) {
+        const deletedUser = await prisma.user.delete({ where: { email: existingUser?.email }, select: { id: true, email: true } });
+        return new Response(`User: ${ JSON.stringify(deletedUser) } deleted`, { status: 200 });
+      }
     }
 
     return new Response('Given user not found in database', { status: 400 })
