@@ -58,4 +58,4 @@ export const project = createSlice({
     }
 });
 
-export const { setAllProjects, setCurrentProject, setCurrentProjectId } = project.actions;
+export const { setAllProjects, setCurrentProject, clearAllProjects, clearCurrentProject } = project.actions;
