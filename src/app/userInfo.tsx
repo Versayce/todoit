@@ -22,7 +22,7 @@ export const User = () => {
 	return (
 		<div>
 			<h1>session:</h1>
-			<pre>{session?.user.id}</pre>
+			<pre>{JSON.stringify(session?.user)}</pre>
 			<h1>all projects:</h1>
 			<pre>{JSON.stringify(projects)}</pre>
 		</div>
