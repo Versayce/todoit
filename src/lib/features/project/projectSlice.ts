@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { fetchAllProjects } from "./projectThunks";
 
 type InitialState = {
-    allProjects: ProjectState[],
+    allProjects: {[key: number]: ProjectState},
     currentProject: ProjectState,
     currentProjectId: string,
 }
 
-type ProjectState = {
+export type ProjectState = {
     id: number,
     title: string,
     description: string,
@@ -23,7 +24,7 @@ type ProjectTaskState = {
 }
 
 const initialState = {
-    allProjects: [],
+    allProjects: {},
     currentProject: {} as ProjectState,
     currentProjectId: "",
 } as InitialState
@@ -32,7 +33,7 @@ export const project = createSlice({
     name: "project",
     initialState,
     reducers: {
-        setAllProjects: (state, action: PayloadAction<any>) => {
+        setAllProjects: (state, action: PayloadAction<ProjectState[]>) => {
             state.allProjects = action.payload;
         },
         setCurrentProject: (state, action: PayloadAction<any>) => {
@@ -42,6 +43,16 @@ export const project = createSlice({
             state.currentProjectId = action.payload;
         },
     },
+    extraReducers: (builder) => {
+        builder.addCase(fetchAllProjects.fulfilled, (state, action) => {
+            // console.log("inside reducer: ", action.payload)
+            const normalizedProjects = action.payload.reduce((acc, project) => {
+                acc[project.id] = project;
+                return acc;
+            }, {} as {[key: number]: ProjectState});
+            state.allProjects = normalizedProjects;
+        });
+    }
 });
 
 export const { setAllProjects, setCurrentProject, setCurrentProjectId } = project.actions;

@@ -55,15 +55,44 @@ async function seedDatabase(): Promise<void> {
 				projectTasks: {
 					create: [
 						{
-							title: 'test1',
-							description: 'project task #1',
+							title: 'Task 1',
+							description: 'task for project 1',
 							priority: 1,
 							completionStatus: false,
 							authorId: user.id,
 						},
 						{
-							title: 'test2',
-							description: 'project task #2',
+							title: 'Task 2',
+							description: 'task for project 1',
+							priority: 2,
+							completionStatus: false,
+							authorId: user.id,
+						},
+					],
+				},
+			},
+			include: {
+				projectTasks: true,
+			},
+		});
+
+		const project2 = await prisma.project.create({
+			data: {
+				title: 'project2',
+				description: 'this is project #2',
+				authorId: user.id,
+				projectTasks: {
+					create: [
+						{
+							title: 'Task 1',
+							description: 'task for project 2',
+							priority: 1,
+							completionStatus: false,
+							authorId: user.id,
+						},
+						{
+							title: 'Task 2',
+							description: 'task for project 2',
 							priority: 2,
 							completionStatus: false,
 							authorId: user.id,

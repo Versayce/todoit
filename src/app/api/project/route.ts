@@ -16,11 +16,13 @@ export async function POST(req: Request) {
 		const userProjects = await prisma.project.findMany({
 			where: { authorId: id },
 			select: {
+				id: true,
 				title: true,
 				description: true,
 				completionStatus: true,
 				projectTasks: {
 					select: {
+						id: true,
 						title: true,
 						description: true,
 						priority: true,
@@ -35,7 +37,7 @@ export async function POST(req: Request) {
 
 		console.log(userProjects);
 
-		return Response.json({ userProjects }, { status: 200 });
+		return Response.json(userProjects, { status: 200 });
 	} catch (error) {
 		return Response.json(`${error}`, { status: 500 });
 	}

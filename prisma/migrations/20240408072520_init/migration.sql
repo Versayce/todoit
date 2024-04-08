@@ -47,7 +47,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "UserTask" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "title" VARCHAR(100) NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE "UserTask" (
 
 -- CreateTable
 CREATE TABLE "Project" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "title" VARCHAR(100) NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE "Project" (
 
 -- CreateTable
 CREATE TABLE "ProjectTask" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "title" VARCHAR(100) NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE "ProjectTask" (
     "completionStatus" BOOLEAN NOT NULL DEFAULT false,
     "startDate" TIMESTAMP(3),
     "endDate" TIMESTAMP(3),
-    "projectId" INTEGER NOT NULL,
+    "projectId" TEXT NOT NULL,
     "authorId" TEXT NOT NULL,
 
     CONSTRAINT "ProjectTask_pkey" PRIMARY KEY ("id")
