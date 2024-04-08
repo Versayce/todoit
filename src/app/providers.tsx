@@ -1,6 +1,7 @@
 'use client';
 
 import { SessionProvider } from 'next-auth/react';
+import StoreProvider from './storeProvider';
 import React from 'react';
 
 type Props = {
@@ -8,5 +9,10 @@ type Props = {
 };
 
 export const Providers = ({ children }: Props) => {
-	return <SessionProvider>{children}</SessionProvider>;
+	return (
+		<SessionProvider>
+			<StoreProvider>
+				{children}
+			</StoreProvider>
+		</SessionProvider>);
 };
