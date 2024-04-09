@@ -11,5 +11,5 @@ export default async function Home() {
 			<pre>{JSON.stringify(session, null, '    ')}</pre>
 			<User />
 		</main>
-	) as JSX.Element;
+	);
 }

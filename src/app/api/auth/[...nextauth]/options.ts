@@ -48,8 +48,8 @@ export const authOptions: NextAuthOptions = {
 	},
 	callbacks: {
 		session({ session, token }) {
-			console.log('Session Callback: ', { session, token });
 			session.user.id = token.userId;
+			session.user.hashedPassword = token.hashedPassword;
 			return {
 				...session,
 				user: {
@@ -59,7 +59,6 @@ export const authOptions: NextAuthOptions = {
 			};
 		},
 		jwt({ token, user }) {
-			console.log('JWT Callback: ', { token, user });
 			if (user) {
 				const u = user as User;
 				return {
@@ -67,6 +66,7 @@ export const authOptions: NextAuthOptions = {
 					id: u.id,
 					email: u.email,
 					name: u.username,
+					hashedPassword: u.hashedPassword,
 				};
 			}
 			return token;
