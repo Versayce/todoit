@@ -1,15 +1,18 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useAppSelector } from '@/lib/store';
 import { fetchAllProjects } from '@/lib/features/project/projectThunks';
 import { useAppDispatch } from '@/lib/hooks';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
 
 export const User = () => {
 	const { data: session } = useSession();
 	const projects = useAppSelector((state) => state.project.allProjects);
 	const dispatch = useAppDispatch();
+	const router = useRouter();
 
 	useEffect(() => {
 		if (session?.user) {
@@ -18,11 +21,17 @@ export const User = () => {
 	}, [session?.user.id]);
 
 	return (
-		<div>
-			<h1>session:</h1>
-			<pre>{JSON.stringify(session?.user)}</pre>
-			<h1>all projects:</h1>
-			<pre>{JSON.stringify(projects)}</pre>
+		<div className="flex flex-col items-center justify-center gap-2">
+			<h1 className="text-2xl font-bold mt-10">session:</h1>
+			<pre className="text-sm">{JSON.stringify(session?.user, null, '    ')}</pre>
+
+			<h1 className="text-2xl font-bold mt-10">all projects:</h1>
+			<pre className="text-sm">{JSON.stringify(projects, null, '    ')}</pre>
+
+			{session && <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => signOut()}>Sign Out</button>}
+			{!session && <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => {
+				router.push('/signin');
+			}}>Sign In</button>}
 		</div>
 	) as JSX.Element;
 };
