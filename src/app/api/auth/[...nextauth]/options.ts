@@ -29,7 +29,7 @@ export const authOptions: NextAuthOptions = {
 					credentials.password,
 					user.hashedPassword
 				);
-				if (!passwordMatch) return null;
+				if (!passwordMatch) throw new Error('Invalid credentials');
 
 				return {
 					id: user.id,

@@ -9,12 +9,17 @@ const SignInPage: React.FC = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        signIn('credentials', { 
+        const res = await signIn('credentials', { 
             email, 
             password, 
-            redirect: true, 
-            callbackUrl: '/'
+            redirect: false
         });
+        if (!res?.error) {
+            window.location.href = '/';
+        } else {
+            //TODO handle error 
+            console.error('ERROR: ', res.error);
+        }
     };
 
     const githubSignIn = async () => {
