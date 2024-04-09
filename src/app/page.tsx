@@ -14,5 +14,5 @@ export default async function Home() {
 			<div>Client Data</div>
 			<User />
 		</main>
-	);
+	) as JSX.Element;
 }

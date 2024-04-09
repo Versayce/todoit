@@ -35,8 +35,6 @@ export async function POST(req: Request) {
 		if (!userProjects)
 			return Response.json('Projects not found.', { status: 404 });
 
-		console.log(userProjects);
-
 		return Response.json(userProjects, { status: 200 });
 	} catch (error) {
 		return Response.json(`${error}`, { status: 500 });

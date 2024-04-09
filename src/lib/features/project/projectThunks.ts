@@ -17,8 +17,8 @@ export const fetchAllProjects = createAsyncThunk(
                 }
             );
             const data: projectApiResponse = await response.json();
-            // console.log('thunk data: ', data)
-            return data;
+
+            return (data);
         } catch (error) {
             if (error instanceof Error) {
                 return rejectWithValue(error.message);

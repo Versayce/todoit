@@ -14,5 +14,6 @@ export const Providers = ({ children }: Props) => {
 			<StoreProvider>
 				{children}
 			</StoreProvider>
-		</SessionProvider>);
+		</SessionProvider>
+	);
 };

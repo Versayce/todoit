@@ -17,8 +17,6 @@ export const User = () => {
 		}
 	}, [session?.user.id]);
 
-	console.log(projects)
-
 	return (
 		<div>
 			<h1>session:</h1>
