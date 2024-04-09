@@ -54,9 +54,22 @@ export async function POST(req: Request) {
 			});
 		}
 
-		const thisUser = await prisma.user.findFirst({
+		const thisUser = await prisma.user.findUnique({
 			where: {
-				OR: [{ email: email }, { id: id }],
+				id: id
+			},
+			select: {
+				id: true,
+				email: true,
+				username: true,
+				tasks: true,
+				projects: {
+					select: {
+						title: true,
+						description: true,
+						completionStatus: true,
+					},
+				},
 			},
 		});
 

@@ -17,7 +17,8 @@ export const User = () => {
 		if (session?.user) {
 			dispatch(fetchAllProjects(session?.user.id));
 		}
-	}, [session?.user.id]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [session?.user]);
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-2">
