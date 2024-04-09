@@ -20,6 +20,7 @@ export async function POST(req: Request) {
 				title: true,
 				description: true,
 				completionStatus: true,
+				authorId: true,
 				projectTasks: {
 					select: {
 						id: true,
@@ -27,6 +28,13 @@ export async function POST(req: Request) {
 						description: true,
 						priority: true,
 						completionStatus: true,
+						author: {
+							select: {
+								id: true,
+								username: true,
+								email: true,
+							},
+						},
 					},
 				},
 			},
