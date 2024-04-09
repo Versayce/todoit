@@ -43,6 +43,9 @@ export const authOptions: NextAuthOptions = {
 			clientSecret: process.env.GITHUB_SECRET as string,
 		}),
 	],
+	pages: {
+		signIn: '/auth/signin',
+	},
 	callbacks: {
 		session({ session, token }) {
 			console.log('Session Callback: ', { session, token });

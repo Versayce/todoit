@@ -24,5 +24,5 @@ export const User = () => {
 			<h1>all projects:</h1>
 			<pre>{JSON.stringify(projects)}</pre>
 		</div>
-	);
+	) as JSX.Element;
 };
