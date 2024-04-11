@@ -22,16 +22,6 @@ export const User = () => {
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-2">
-			<h1 className="text-2xl font-bold mt-10">session:</h1>
-			<pre className="text-sm">
-				{JSON.stringify(session?.user, null, '    ')}
-			</pre>
-
-			<h1 className="text-2xl font-bold mt-10">all projects:</h1>
-			<pre className="text-sm">
-				{JSON.stringify(projects, null, '    ')}
-			</pre>
-
 			{session && (
 				<button
 					className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -50,6 +40,16 @@ export const User = () => {
 					Sign In
 				</button>
 			)}
+			<h1 className="text-2xl font-bold mt-10">session:</h1>
+			<pre className="text-sm">
+				{JSON.stringify(session?.user, null, '    ')}
+			</pre>
+
+			<h1 className="text-2xl font-bold mt-10">all projects:</h1>
+			<pre className="text-sm">
+				{JSON.stringify(projects, null, '    ')}
+			</pre>
+
 		</div>
 	);
 };
