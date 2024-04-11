@@ -25,9 +25,9 @@ export type ProjectTaskState = {
 }
 
 const initialState = {
-    allProjects: {},
-    currentProject: {} as ProjectState,
-    currentProjectId: "",
+    allProjects: {} ,
+    currentProject: {},
+    currentProjectId: ""
 } as InitialState
 
 export const project = createSlice({
