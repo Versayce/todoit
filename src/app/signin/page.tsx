@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 
-const SignInPage: React.FC = () => {
+const SignInPage = (): React.ReactNode => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 

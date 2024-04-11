@@ -7,7 +7,7 @@ import { useAppDispatch } from '@/lib/hooks';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-export const User = () => {
+export const User = (): React.ReactNode  => {
 	const { data: session } = useSession();
 	const projects = useAppSelector((state) => state.project.allProjects);
 	const dispatch = useAppDispatch();
@@ -49,7 +49,6 @@ export const User = () => {
 			<pre className="text-sm">
 				{JSON.stringify(projects, null, '    ')}
 			</pre>
-
 		</div>
 	);
 };
