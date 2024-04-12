@@ -2,7 +2,7 @@
 
 import { signOut, useSession } from 'next-auth/react';
 import { useAppSelector } from '@/lib/store';
-import { fetchAllProjects } from '@/lib/features/project/projectThunks';
+import { fetchAllUserProjects } from '@/lib/features/project/projectThunks';
 import { useAppDispatch } from '@/lib/hooks';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -15,7 +15,7 @@ export const User = (): React.ReactNode  => {
 
 	useEffect(() => {
 		if (session?.user) {
-			dispatch(fetchAllProjects(session?.user.id));
+			dispatch(fetchAllUserProjects(session?.user.id));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [session?.user]);
