@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchAllProjects } from "./projectThunks";
+import { fetchAllUserProjects } from "./projectThunks";
 
 type State = {
     allProjects: {[key: string]: Project},
@@ -44,7 +44,7 @@ export const project = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchAllProjects.fulfilled, (state, action: PayloadAction<Project[]>) => {
+        builder.addCase(fetchAllUserProjects.fulfilled, (state, action: PayloadAction<Project[]>) => {
             const normalizedProjects = action.payload.reduce<{ [key: string]: Project }>((acc, project) => {
                 acc[project.id] = project;
                 return acc;

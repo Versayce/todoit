@@ -3,7 +3,7 @@ import { Project } from "./projectSlice";
 
 type ProjectApiResponse = Project[];
 
-export const fetchAllProjects = createAsyncThunk(
+export const fetchAllUserProjects = createAsyncThunk(
     '/project/fetchAllProjects',
     async (id: string, { rejectWithValue }) => {
         try {
