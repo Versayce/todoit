@@ -1,58 +1,54 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchAllProjects } from "./projectThunks";
-import { clear } from "console";
 
-type InitialState = {
-    allProjects: {[key: number]: ProjectState},
-    currentProject: ProjectState,
-    currentProjectId: string,
+type State = {
+    allProjects: {[key: string]: Project},
+    currentProject?: Project,
 }
 
-export type ProjectState = {
-    id: number,
+export type Project = {
+    id: string,
     title: string,
     description: string,
     completionStatus: boolean,
-    projectTasks: ProjectTaskState[]
+    projectTasks: Task[]
 }
 
-export type ProjectTaskState = {
-    id: number,
+export type Task = {
+    id: string,
     title: string,
     description: string,
     priority: string,
     completionStatus: boolean,
 }
 
-const initialState = {
-    allProjects: {} ,
-    currentProject: {},
-    currentProjectId: ""
-} as InitialState
+const initialState: State = {
+    allProjects: {},
+};
 
 export const project = createSlice({
     name: "project",
     initialState,
     reducers: {
-        setAllProjects: (state, action: PayloadAction<{[key: number]: ProjectState}>) => {
+        setAllProjects: (state, action: PayloadAction<{[key: string]: Project}>) => {
             state.allProjects = action.payload;
         },
         clearAllProjects: (state) => {
             state.allProjects = {};
         },
-        setCurrentProject: (state, action: PayloadAction<ProjectState>) => {
+        setCurrentProject: (state, action: PayloadAction<Project>) => {
             state.currentProject = action.payload;
         },
         clearCurrentProject: (state) => {
-            state.currentProject = {} as ProjectState;
+            state.currentProject = undefined;
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchAllProjects.fulfilled, (state, action: PayloadAction<ProjectState[]>) => {
-            const normalizedProjects = action.payload.reduce((acc, project) => {
+        builder.addCase(fetchAllProjects.fulfilled, (state, action: PayloadAction<Project[]>) => {
+            const normalizedProjects = action.payload.reduce<{ [key: string]: Project }>((acc, project) => {
                 acc[project.id] = project;
                 return acc;
-            }, {} as {[key: number]: ProjectState});
+            }, {});
             state.allProjects = normalizedProjects;
         });
     }

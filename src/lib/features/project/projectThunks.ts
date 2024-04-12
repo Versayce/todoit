@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ProjectState } from "./projectSlice";
+import { Project } from "./projectSlice";
 
-type projectApiResponse = ProjectState[];
+type ProjectApiResponse = Project[];
 
 export const fetchAllProjects = createAsyncThunk(
     '/project/fetchAllProjects',
@@ -16,7 +16,7 @@ export const fetchAllProjects = createAsyncThunk(
                     body: JSON.stringify({ id }),
                 }
             );
-            const data: projectApiResponse = await response.json();
+            const data: ProjectApiResponse = await response.json();
 
             return (data);
         } catch (error) {
