@@ -3,16 +3,16 @@ type ProjectApiResponse = {
     title: string,
     description: string,
     completionStatus: boolean,
-    projectTasks: {
+    projectTasks?: {
         id: string,
         title: string,
         description: string,
-        priority: string,
+        priority?: string,
         completionStatus: boolean,
     }[]
 }
 
-export async function fetchUserProjectsById(id: string): Promise<ProjectApiResponse> {
+export async function fetchUserProjectsByUserId(id: string): Promise<ProjectApiResponse[]> {
     try {
         const response = await fetch('/api/project',
             {
@@ -24,9 +24,10 @@ export async function fetchUserProjectsById(id: string): Promise<ProjectApiRespo
             }
         );
         if (!response.ok) {
+            console.log(response);
             throw new Error(`ERROR: ${response.status}`);
         }
-        const data: ProjectApiResponse = await response.json();
+        const data = await response.json();
         return data;
     } catch (error) {
         if (error instanceof Error) {

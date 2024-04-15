@@ -1,24 +1,26 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Project } from "./projectSlice";
+import { fetchUserProjectsByUserId } from "./requests";
 
-type ProjectApiResponse = Project[];
+type Project = {
+    id: string,
+    title: string,
+    description: string,
+    completionStatus: boolean,
+    projectTasks?: {
+        id: string,
+        title: string,
+        description: string,
+        priority?: string,
+        completionStatus: boolean,
+    }[]
+}
 
-export const fetchAllUserProjects = createAsyncThunk(
+export const getAllUserProjects = createAsyncThunk<Project[], string, { rejectValue: string }>(
     '/project/fetchAllProjects',
     async (id: string, { rejectWithValue }) => {
         try {
-            const response = await fetch('/api/project',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id }),
-                }
-            );
-            const data: ProjectApiResponse = await response.json();
-
-            return (data);
+            const projects = await fetchUserProjectsByUserId(id);
+            return projects;
         } catch (error) {
             if (error instanceof Error) {
                 return rejectWithValue(error.message);

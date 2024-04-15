@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchAllUserProjects } from "./projectThunks";
+import { getAllUserProjects } from "./projectThunks";
 
 type State = {
     allProjects: {[key: string]: Project},
     currentProject?: Project,
+    error: string | null,
 }
 
 export type Project = {
@@ -11,7 +12,7 @@ export type Project = {
     title: string,
     description: string,
     completionStatus: boolean,
-    projectTasks: Task[]
+    projectTasks?: Task[]
 }
 
 export type Task = {
@@ -24,6 +25,8 @@ export type Task = {
 
 const initialState: State = {
     allProjects: {},
+    currentProject: undefined,
+    error: null,
 };
 
 export const project = createSlice({
@@ -44,12 +47,15 @@ export const project = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchAllUserProjects.fulfilled, (state, action: PayloadAction<Project[]>) => {
+        builder.addCase(getAllUserProjects.fulfilled, (state, action: PayloadAction<Project[]>) => {
             const normalizedProjects = action.payload.reduce<{ [key: string]: Project }>((acc, project) => {
                 acc[project.id] = project;
                 return acc;
             }, {});
             state.allProjects = normalizedProjects;
+        })
+        .addCase(getAllUserProjects.rejected, (state, action) => {
+            state.error = action.error.message ? action.error.message : 'Failed to fetch projects';
         });
     }
 });

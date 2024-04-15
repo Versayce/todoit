@@ -10,8 +10,9 @@ export async function POST(req: Request) {
 		const data = await req.json();
 		const { id } = data;
 
-		if (!id)
+		if (!id) {
 			return Response.json('Required data missing.', { status: 400 });
+		}
 
 		const userProjects = await prisma.project.findMany({
 			where: { authorId: id },
@@ -40,8 +41,8 @@ export async function POST(req: Request) {
 			},
 		});
 
-		if (!userProjects)
-			return Response.json('Projects not found.', { status: 404 });
+		if (!userProjects || userProjects.length === 0)
+			return Response.json('No projects found.', { status: 404 });
 
 		return Response.json(userProjects, { status: 200 });
 	} catch (error) {
