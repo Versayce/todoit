@@ -15,7 +15,7 @@ type Project = {
     }[]
 }
 
-export const getAllUserProjects = createAsyncThunk<Project[], string, { rejectValue: string }>(
+export const getAllUserProjects = createAsyncThunk<Project[], string>(
     '/project/fetchAllProjects',
     async (id: string, { rejectWithValue }) => {
         try {
