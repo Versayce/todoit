@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 
 const SignInPage = (): React.ReactNode => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState<string | null>(null);
+    const [password, setPassword] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -17,8 +18,7 @@ const SignInPage = (): React.ReactNode => {
         if (!res?.error) {
             window.location.href = '/';
         } else {
-            //TODO handle error 
-            console.error('ERROR: ', res.error);
+            setError(res.error);
         }
     };
 
@@ -40,6 +40,10 @@ const SignInPage = (): React.ReactNode => {
                         Password:
                     </label>
                     <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+                    {error ? 
+                        <p className="flex flex-col items-center w-full h-3 text-base text-red-600">{error}</p> 
+                        : <p className="flex flex-col items-center w-full h-3 text-base text-red-600"></p>
+                    }
                 </div>
                 <div className="flex items-center justify-center">
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
@@ -47,7 +51,10 @@ const SignInPage = (): React.ReactNode => {
                     </button>
                 </div>
             </form>
-            <button onClick={githubSignIn} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <button 
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-3 rounded focus:outline-none focus:shadow-outline" 
+                onClick={githubSignIn}
+            >
                 Sign In with GitHub
             </button>
         </div>
