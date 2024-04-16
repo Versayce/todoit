@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 
 const SignInPage = (): React.ReactNode => {
-    const [email, setEmail] = useState<string | null>('');
-    const [password, setPassword] = useState<string | null>('');
-    const [error, setError] = useState<string | null>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [error, setError] = useState<string>('');
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
