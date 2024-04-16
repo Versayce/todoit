@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
 
 				return {
 					id: user.id,
-					username: user.username,
+					name: user.name,
 					email: user.email,
 				};
 			},
@@ -46,14 +46,6 @@ export const authOptions: NextAuthOptions = {
 		GoogleProvider({
 			clientId: process.env.GOOGLE_ID as string,
 			clientSecret: process.env.GOOGLE_SECRET as string,
-			profile(profile: GoogleProfile) {
-				return {
-					id: profile.id,
-					name: profile.name,
-					email: profile.email,
-					image: profile.picture,
-				};
-			},
 		}),
 	],
 	pages: {

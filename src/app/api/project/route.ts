@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 						author: {
 							select: {
 								id: true,
-								username: true,
+								name: true,
 								email: true,
 							},
 						},

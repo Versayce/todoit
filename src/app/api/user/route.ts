@@ -12,7 +12,7 @@ export async function GET() {
 		const allUsers = await prisma.user.findMany({
 			select: {
 				id: true,
-				username: true,
+				name: true,
 				email: true,
 				tasks: true,
 				projects: {
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 	}
 	try {
 		const data = await req.json();
-		const { email, username, id } = data;
+		const { email, name, id } = data;
 
 		if (!email || !id) {
 			return Response.json('No data provided for one or more fields.', {
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
 			select: {
 				id: true,
 				email: true,
-				username: true,
+				name: true,
 				tasks: true,
 				projects: {
 					select: {
