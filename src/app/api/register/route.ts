@@ -4,10 +4,10 @@ import bcrypt from 'bcrypt';
 export async function POST(req: Request) {
 	try {
 		const data = await req.json();
-		const { username, email, password } = data;
+		const { name, email, password } = data;
 
-		if (!username || !email || !password) {
-			return new Response('Missing username, email, or password', {
+		if (!name || !email || !password) {
+			return new Response('Missing name, email, or password', {
 				status: 400,
 			});
 		}
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 			const hashedPass = await bcrypt.hash(password, 14);
 			const newUser = await prisma.user.create({
 				data: {
-					username: username,
+					name: name,
 					email: email,
 					hashedPassword: hashedPass,
 				},

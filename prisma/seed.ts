@@ -16,7 +16,7 @@ async function seedDatabase(): Promise<void> {
 		const hashedPass = await bcrypt.hash(password, 14);
 		const user = await prisma.user.create({
 			data: {
-				username: 'testUser',
+				name: 'testUser',
 				email: 'user@test.com',
 				hashedPassword: hashedPass,
 			},
@@ -29,14 +29,14 @@ async function seedDatabase(): Promise<void> {
 			data: [
 				{
 					title: 'Task 1',
-					description: `This is the first task created by user: ${user.username}.`,
+					description: `This is the first task created by user: ${user.name}.`,
 					priority: 1,
 					completionStatus: false,
 					authorId: user.id,
 				},
 				{
 					title: 'Task 2',
-					description: `This is the first task created by user: ${user.username}.`,
+					description: `This is the first task created by user: ${user.name}.`,
 					priority: 2,
 					completionStatus: false,
 					authorId: user.id,
