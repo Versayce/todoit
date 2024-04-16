@@ -55,12 +55,13 @@ model VerificationToken {
 // Database Table Models
 model User {
   id             String        @id @default(cuid())
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
   name           String?
   image          String?
   email          String        @unique
+  emailVerified  DateTime?
   hashedPassword String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
   tasks          UserTask[]
   projects       Project[]
   accounts       Account[]
