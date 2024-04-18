@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
-import { redirect } from 'next/dist/server/api-utils';
 
 export type SignInErrorTypes =
   | "Signin"
@@ -30,7 +29,7 @@ const errors: Record<SignInErrorTypes, string> = {
     CredentialsSignin: "Sign in failed. Check the details you provided are correct.",
     SessionRequired: "Please sign in to access this page.",
     default: "Unable to sign in.",
-  };
+};
 
 const SignInPage = (): React.ReactNode => {
     const [email, setEmail] = useState<string>('');
@@ -54,11 +53,11 @@ const SignInPage = (): React.ReactNode => {
 
     const githubSignIn = async () => {
         signIn('github', { redirect: true, callbackUrl: '/' })
-    }
+    };
 
     const googleSignIn = async () => {
         signIn('google', { redirect: true, callbackUrl: '/' })
-    }
+    };
 
     useEffect(() => {
         if (searchParams.has('error')) {
@@ -70,7 +69,7 @@ const SignInPage = (): React.ReactNode => {
                 setError(errors[errorType[0]]);
             }
         }
-    }, [searchParams])
+    }, [searchParams]);
 
     return (
         <div className="flex flex-col justify-center items-center h-screen bg-gray-200">
