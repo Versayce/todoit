@@ -42,16 +42,14 @@ export const authOptions: NextAuthOptions = {
 		GitHub({
 			clientId: process.env.GITHUB_ID as string,
 			clientSecret: process.env.GITHUB_SECRET as string,
-			allowDangerousEmailAccountLinking: true,
 		}),
 		Google({
 			clientId: process.env.GOOGLE_ID as string,
 			clientSecret: process.env.GOOGLE_SECRET as string,
-			allowDangerousEmailAccountLinking: true,
 		}),
 	],
 	pages: {
-		signIn: '/auth/signin',
+		signIn: '/signin',
 	},
 	callbacks: {
 		session({ session, token }) {
