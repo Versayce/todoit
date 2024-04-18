@@ -6,7 +6,6 @@ import { useSearchParams } from 'next/navigation';
 import Loading from './loading';
 
 export type SignInErrorTypes =
-  | "Signin"
   | "OAuthSignin"
   | "OAuthCallback"
   | "OAuthCreateAccount"
@@ -19,17 +18,16 @@ export type SignInErrorTypes =
   | "default";
 
 const errors: Record<SignInErrorTypes, string> = {
-    Signin: "Try signing in with a different account.",
     OAuthSignin: "Try signing in with a different account.",
-    OAuthCallback: "Try signing in with the same account you used originally.",
-    OAuthCreateAccount: "Try signing in with a different account.",
-    EmailCreateAccount: "Try signing in with a different account.",
-    Callback: "Try signing in with a different account.",
-    OAuthAccountNotLinked: "To confirm your identity, sign in with the same account you used originally.",
-    EmailSignin: "The e-mail could not be sent.",
+    OAuthCallback: "Try signing in with a different account.",
+    OAuthCreateAccount: "Account creation failed",
+    EmailCreateAccount: "Account creation failed",
+    Callback: "Provider callback failed",
+    OAuthAccountNotLinked: "Sign in with the same account you used originally.",
+    EmailSignin: "E-mail verification failed",
     CredentialsSignin: "Sign in failed. Check the details you provided are correct.",
     SessionRequired: "Please sign in to access this page.",
-    default: "Unable to sign in.",
+    default: "Sign in failed. Please try again.",
 };
 
 const SignInPage = (): React.ReactNode => {
