@@ -12,8 +12,6 @@ type ProjectApiResponse = {
     }[]
 }
 
-const BASE_URL = 'https://todoit-task.vercel.app';
-
 export async function todoitFetch(endpoint: string, options?: RequestInit): Promise<Response> {
     const headers = {
         'Content-Type': 'application/json',

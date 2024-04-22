@@ -6,12 +6,18 @@ type Project = {
     title: string,
     description: string,
     completionStatus: boolean,
+    authorId?: string,
     projectTasks?: {
         id: string,
         title: string,
         description: string,
         priority?: string,
         completionStatus: boolean,
+        author?: {
+            id: string,
+            name: string,
+            email: string,
+        },
     }[]
 }
 
