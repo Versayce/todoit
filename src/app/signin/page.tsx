@@ -87,7 +87,7 @@ const SignInPage = (): React.ReactNode => {
                         <Suspense fallback={<Loading/>}>
                             {error ? 
                                 <p className="flex flex-col items-center w-full h-3 text-red-600">{error}</p> 
-                                : <p className="flex flex-col items-center w-full h-3"></p>
+                                : <p className="flex flex-col items-center w-full h-3 invisible">Loading...</p>
                             }
                         </Suspense>
                     </div>

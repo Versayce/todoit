@@ -12,28 +12,42 @@ type ProjectApiResponse = {
     }[]
 }
 
-export async function fetchUserProjectsByUserId(id: string): Promise<ProjectApiResponse[]> {
-    try {
-        const response = await fetch('/api/project',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id }),
-            }
-        );
+const BASE_URL = 'https://todoit-task.vercel.app';
+
+function todoitFetch(endpoint: string, options?: RequestInit): Promise<Response> {
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        ...options?.headers,
+    };
+
+    const finalOptions = {
+        ...options,
+        headers,
+    };
+
+    return fetch(`${endpoint}`, finalOptions).then(async (response) => {
         if (!response.ok) {
-            console.log(response);
-            throw new Error(`ERROR: ${response.status}`);
+            const error = await response.json();
+            throw new Error(error.message);
         }
+        return response
+    }).catch((error) => {
+        throw error;
+    });
+}
+
+export async function fetchUserProjectsByUserId(id: string): Promise<ProjectApiResponse[]> {
+    const response = await todoitFetch('/api/project', {
+        method: 'POST',
+        body: JSON.stringify({ id }),
+    });
+    
+    if (!response.ok) {
+        console.log(response);
+        throw new Error(`ERROR: ${response.status}`);
+    } else {
         const data = await response.json();
         return data;
-    } catch (error) {
-        if (error instanceof Error) {
-            throw error;
-        } else {
-            throw new Error('An unexpected error occurred.');
-        }
     }
 }
