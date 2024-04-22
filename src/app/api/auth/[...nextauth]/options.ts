@@ -54,7 +54,6 @@ export const authOptions: NextAuthOptions = {
 	callbacks: {
 		session({ session, token }) {
 			session.user.id = token.userId;
-			session.user.hashedPassword = token.hashedPassword;
 			return {
 				...session,
 				user: {
@@ -71,7 +70,6 @@ export const authOptions: NextAuthOptions = {
 					id: u.id,
 					email: u.email,
 					name: u.name,
-					hashedPassword: u.hashedPassword,
 				};
 			}
 			return token;
