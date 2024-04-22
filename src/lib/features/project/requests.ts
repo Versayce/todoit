@@ -1,6 +1,7 @@
 import todoitFetch from "@/app/api/utils/fetch";
+import { translateProjectApiResponseToState } from "@/app/api/utils/translators/projectTranslator";
 
-type ProjectApiResponse = {
+export type ProjectApiResponse = {
     id: string,
     title: string,
     description: string,
@@ -25,6 +26,7 @@ export async function getUserProjectsByUserId(id: string): Promise<ProjectApiRes
         throw new Error(`ERROR: ${response.status}`);
     } else {
         const data = await response.json();
-        return data;
+        const projects = translateProjectApiResponseToState(data);
+        return projects;
     }
 }
