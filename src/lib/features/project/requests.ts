@@ -14,7 +14,7 @@ type ProjectApiResponse = {
 
 const BASE_URL = 'https://todoit-task.vercel.app';
 
-function todoitFetch(endpoint: string, options?: RequestInit): Promise<Response> {
+export async function todoitFetch(endpoint: string, options?: RequestInit): Promise<Response> {
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -37,7 +37,7 @@ function todoitFetch(endpoint: string, options?: RequestInit): Promise<Response>
     });
 }
 
-export async function fetchUserProjectsByUserId(id: string): Promise<ProjectApiResponse[]> {
+export async function getUserProjectsByUserId(id: string): Promise<ProjectApiResponse[]> {
     const response = await todoitFetch('/api/project', {
         method: 'POST',
         body: JSON.stringify({ id }),

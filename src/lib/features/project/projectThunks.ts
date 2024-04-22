@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchUserProjectsByUserId } from "./requests";
+import { getUserProjectsByUserId } from "./requests";
 
 type Project = {
     id: string,
@@ -19,7 +19,7 @@ export const getAllUserProjects = createAsyncThunk<Project[], string, { rejectVa
     '/project/fetchAllProjects',
     async (id: string, { rejectWithValue }) => {
         try {
-            const projects = await fetchUserProjectsByUserId(id);
+            const projects = await getUserProjectsByUserId(id);
             return projects;
         } catch (error) {
             if (error instanceof Error) {
